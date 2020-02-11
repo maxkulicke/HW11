@@ -9,6 +9,7 @@ var activeNote = {};
 
 // A function for getting all notes from the db
 var getNotes = function() {
+  console.log("getNotes() click");
   return $.ajax({
     url: "/api/notes",
     method: "GET"
@@ -17,6 +18,7 @@ var getNotes = function() {
 
 // A function for saving a note to the db
 var saveNote = function(note) {
+  console.log("saveNote() click");
   return $.ajax({
     url: "/api/notes",
     data: note,
@@ -26,6 +28,7 @@ var saveNote = function(note) {
 
 // A function for deleting a note from the db
 var deleteNote = function(id) {
+  console.log("deleteNote() click");
   return $.ajax({
     url: "api/notes/" + id,
     method: "DELETE"
@@ -34,6 +37,7 @@ var deleteNote = function(id) {
 
 // If there is an activeNote, display it, otherwise render empty inputs
 var renderActiveNote = function() {
+  console.log("renderActiceNote() click");
   $saveNoteBtn.hide();
 
   if (activeNote.id) {
@@ -51,6 +55,7 @@ var renderActiveNote = function() {
 
 // Get the note data from the inputs, save it to the db and update the view
 var handleNoteSave = function() {
+  console.log("handleNoteSave() click");
   var newNote = {
     title: $noteTitle.val(),
     text: $noteText.val()
@@ -64,6 +69,7 @@ var handleNoteSave = function() {
 
 // Delete the clicked note
 var handleNoteDelete = function(event) {
+  console.log("handleNoteDleete() click");
   // prevents the click listener for the list from being called when the button inside of it is clicked
   event.stopPropagation();
 
@@ -83,12 +89,14 @@ var handleNoteDelete = function(event) {
 
 // Sets the activeNote and displays it
 var handleNoteView = function() {
+  console.log("handleNoteView() click");
   activeNote = $(this).data();
   renderActiveNote();
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
 var handleNewNoteView = function() {
+  console.log("handleNewNoteView() click");
   activeNote = {};
   renderActiveNote();
 };
@@ -96,6 +104,7 @@ var handleNewNoteView = function() {
 // If a note's title or text are empty, hide the save button
 // Or else show it
 var handleRenderSaveBtn = function() {
+  console.log("handleRenderSaveBtn() click");
   if (!$noteTitle.val().trim() || !$noteText.val().trim()) {
     $saveNoteBtn.hide();
   } else {
@@ -105,6 +114,7 @@ var handleRenderSaveBtn = function() {
 
 // Render's the list of note titles
 var renderNoteList = function(notes) {
+  console.log("renderNoteList() click");
   $noteList.empty();
 
   var noteListItems = [];
@@ -127,6 +137,7 @@ var renderNoteList = function(notes) {
 
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
+  console.log("getAndRenderNotes() click");
   return getNotes().then(function(data) {
     renderNoteList(data);
   });
