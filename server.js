@@ -1,16 +1,15 @@
+// to do: deploy to Heroku
+
 const express = require("express");
 const path = require("path");
 const fs = require('fs');
-const journal = require('./journal.json');
-
-// require("./public/assets/js/index")(app);
+const db = require('./db/db.json');
 
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -23,16 +22,18 @@ app.get("/notes", function(req, res) {
 });
 
 app.get("/api/notes", (req, res) => {
-  return res.json(journal);
+  return res.json(db);
 });
 
+// full disclosure, mostly copied these from page tyler, we talked through a bunch of
+// stuff on slack
 app.post("/api/notes", (req, res) => {
   let note = req.body;
     note.title = note.title.toLowerCase().replace(/\s+/g, '');
-    journal.push(note);
+    db.push(note);
 
     (async () => {
-      await fs.writeFile('journal.json', JSON.stringify(journal), err => {
+      await fs.writeFile('db/db.json', JSON.stringify(db), err => {
         if(err) throw err;
       })
     })()
@@ -41,11 +42,11 @@ app.post("/api/notes", (req, res) => {
 
 app.delete("/api/notes/:title", (req, res) => {
   const deleteTarget = req.params.title,
-    index = journal.findIndex( i => i.title === deleteTarget);
-    journal.splice(index, 1);
+    index = db.findIndex( i => i.title === deleteTarget);
+    db.splice(index, 1);
 
     (async () => {
-      await fs.writeFile('journal.json', JSON.stringify(journal), err => {
+      await fs.writeFile('db/db.json', JSON.stringify(db), err => {
         if(err) throw err;
       })
     })()
