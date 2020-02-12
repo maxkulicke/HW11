@@ -26,10 +26,9 @@ app.get("/api/notes", (req, res) => {
 });
 
 // full disclosure, mostly copied these from page tyler, we talked through a bunch of
-// stuff on slack
+// stuff on slack, made some changes, but credit where credit is due
 app.post("/api/notes", (req, res) => {
   let note = req.body;
-    note.title = note.title.toLowerCase().replace(/\s+/g, '');
     db.push(note);
 
     (async () => {
@@ -40,9 +39,9 @@ app.post("/api/notes", (req, res) => {
   res.json({ Ok: true });
 });
 
-app.delete("/api/notes/:title", (req, res) => {
-  const deleteTarget = req.params.title,
-    index = db.findIndex( i => i.title === deleteTarget);
+app.delete("/api/notes/:id", (req, res) => {
+  const deleteTarget = req.params.id,
+    index = db.findIndex( i => i.id === deleteTarget);
     db.splice(index, 1);
 
     (async () => {
