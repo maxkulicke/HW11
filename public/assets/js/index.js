@@ -62,7 +62,7 @@ var handleNoteSave = function() {
     text: $noteText.val(),
     id: getId()
   };
-
+  
   saveNote(newNote).then(function(data) {
     getAndRenderNotes();
     renderActiveNote();
